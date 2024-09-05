@@ -20,7 +20,7 @@ services:
       - docker-data:/app/docker-data
     environment:
       PORT: 3000
-      PG_DATABASE_URL: postgres://twenty:twenty@${PG_DATABASE_HOST}/default
+      PG_DATABASE_URL: ${PG_DATABASE_HOST}
       SERVER_URL: ${SERVER_URL}
       FRONT_BASE_URL: ${FRONT_BASE_URL:-$SERVER_URL}
       MESSAGE_QUEUE_TYPE: ${MESSAGE_QUEUE_TYPE}
@@ -53,21 +53,19 @@ services:
       
     depends_on:
       change-vol-ownership:
-        condition: service_completed_successfully
-      db:
-        condition: service_healthy
+        condition: service_completed_successfully      
     healthcheck:
       test: curl --fail http://localhost:3000/healthz
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      interval: 1800s
+      timeout: 30s
+      retries: 1
     restart: always
 
   worker:
     image: twentycrm/twenty:${TAG}
     command: ["yarn", "worker:prod"]
     environment:
-      PG_DATABASE_URL: postgres://twenty:twenty@${PG_DATABASE_HOST}/default
+      PG_DATABASE_URL: ${PG_DATABASE_HOST}
       SERVER_URL: ${SERVER_URL}
       FRONT_BASE_URL: ${FRONT_BASE_URL:-$SERVER_URL}
       MESSAGE_QUEUE_TYPE: ${MESSAGE_QUEUE_TYPE}
@@ -96,25 +94,12 @@ services:
       EMAIL_SMTP_USER: ${EMAIL_SMTP_USER}
       EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD}
       IS_SIGN_UP_DISABLED: ${IS_SIGN_UP_DISABLED}
-    depends_on:
-      db:
-        condition: service_healthy
+    depends_on:    
       server:
         condition: service_healthy
     restart: always
 
-  db:
-    image: twentycrm/twenty-postgres:${TAG}
-    volumes:
-      - db-data:/bitnami/postgresql
-    environment:
-      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
-    healthcheck:
-      test: pg_isready -U twenty -d default
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: always
+ 
 
 volumes:
   docker-data:

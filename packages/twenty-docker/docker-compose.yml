@@ -51,16 +51,6 @@ services:
       EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD}
       IS_SIGN_UP_DISABLED: ${IS_SIGN_UP_DISABLED}
       
-    depends_on:
-      change-vol-ownership:
-        condition: service_completed_successfully      
-    healthcheck:
-      test: curl --fail http://localhost:3000/healthz
-      interval: 1800s
-      timeout: 30s
-      retries: 1
-    restart: always
-
   worker:
     image: twentycrm/twenty:${TAG}
     command: ["yarn", "worker:prod"]
@@ -94,11 +84,7 @@ services:
       EMAIL_SMTP_USER: ${EMAIL_SMTP_USER}
       EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD}
       IS_SIGN_UP_DISABLED: ${IS_SIGN_UP_DISABLED}
-    depends_on:    
-      server:
-        condition: service_healthy
-    restart: always
-
+    
  
 
 volumes:

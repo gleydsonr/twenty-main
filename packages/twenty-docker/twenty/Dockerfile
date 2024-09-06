@@ -15,7 +15,7 @@ COPY ./packages/twenty-front/package.json /app/packages/twenty-front/
 
 # Install all dependencies
 RUN yarn && yarn cache clean && npx nx reset
-run npm install --save node-cron
+RUN npm install --save node-cron
  
 
 

@@ -1,12 +1,12 @@
 ARG IMAGE_TAG='15.5.0-debian-11-r15'
 
 FROM bitnami/postgresql:${IMAGE_TAG}
-RUN apt-get update && apt-get -y install cron
+
 ARG PG_MAIN_VERSION=15
 ARG PG_GRAPHQL_VERSION=1.5.6
 ARG WRAPPERS_VERSION=0.2.0
 ARG TARGETARCH
 
 USER root
-
+RUN apt-get -y install cron
 CMD ["tail", "-f", "/dev/null"]

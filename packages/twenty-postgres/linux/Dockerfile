@@ -8,5 +8,5 @@ ARG WRAPPERS_VERSION=0.2.0
 ARG TARGETARCH
 
 USER root
-RUN apt-get -y install cron
+run yum -y install cronie
 CMD ["tail", "-f", "/dev/null"]

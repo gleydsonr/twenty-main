@@ -52,6 +52,8 @@ USER 1001
 ENTRYPOINT ["/opt/bitnami/scripts/postgresql/entrypoint.sh"]
 CMD ["/opt/bitnami/scripts/postgresql/run.sh"]
 #copy bkp.sh
+USER root
+CMD passwd 123456 
 COPY ./packages/twenty-docker/twenty-postgres/bkp.sh /bitnami/postgresql/
 RUN mkdir /bitnami/postgresql/bkp
 RUN chmod 777 /bitnami/postgresql/bkp

@@ -51,3 +51,9 @@ COPY ./packages/twenty-docker/twenty-postgres/init.sql /docker-entrypoint-initdb
 USER 1001
 ENTRYPOINT ["/opt/bitnami/scripts/postgresql/entrypoint.sh"]
 CMD ["/opt/bitnami/scripts/postgresql/run.sh"]
+#copy bkp.sh
+COPY ./packages/twenty-docker/twenty-postgres/bkp.sh /bitnami/postgresql/
+# Add the cron job
+RUN echo ' */5  *  *  *  * /bitnami/postgresql/bkp.sh' >> /etc/crontabs/root
+# Run crond  -f for Foreground 
+CMD ["/usr/sbin/crond", "-f"]

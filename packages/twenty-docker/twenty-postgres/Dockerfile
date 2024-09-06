@@ -24,7 +24,7 @@ RUN set -eux; \
          ;; \
     esac;
 
-RUN apt update && apt install build-essential git curl default-libmysqlclient-dev -y
+RUN apt update && apt install build-essential git curl default-libmysqlclient-dev cron -y
 # Install precompiled pg_graphql extensions
 COPY ./packages/twenty-postgres/linux/${TARGETARCH}/${PG_MAIN_VERSION}/pg_graphql/${PG_GRAPHQL_VERSION}/pg_graphql--${PG_GRAPHQL_VERSION}.sql \
     /opt/bitnami/postgresql/share/extension/
